@@ -1,0 +1,21 @@
+@apiURL = http://localhost:3001/boards/
+
+GET {{apiURL}}
+
+###
+
+GET {{apiURL}}1
+
+###
+
+POST {{apiURL}}
+Content-Type: application/json
+
+{
+    "name": "will be dltd",
+    "description": "byeeeeeee"
+}
+
+###
+DELETE {{apiURL}}6
+

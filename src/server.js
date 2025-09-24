@@ -12,6 +12,9 @@ app.get('/', (req, res) => {
   res.json({ msg: 'Colab server is running' });
 });
 
+const boardRoutes = require('./routes/boards');
+app.use('/boards', boardRoutes);
+
 
 app.listen(PORT, () => {
   console.log(`Server is running on  http://localhost:${PORT}`);

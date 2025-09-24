@@ -16,9 +16,9 @@ COPY . .
 # Expose the port the app runs on
 EXPOSE 8080
 
-#Genetate Prisma client
+#Generate Prisma client
 RUN npx prisma generate
 
 # Define the command to run the app
-CMD ["sh", "-c", "if [ \"$MODE\" = 'development' ]; then npm run dev; else npm start; fi"]
+CMD ["sh", "-c", "npx prisma generate && if [ \"$MODE\" = 'development' ]; then npm run dev; else npm start; fi"]
 

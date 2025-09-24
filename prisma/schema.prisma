@@ -7,4 +7,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model boards {
+  id          Int       @id(map: "PK_boards") @default(autoincrement())
+  name        String    @db.VarChar(250)
+  description String?   @db.VarChar(250)
+  createdAt   DateTime? @default(now()) @db.Timestamp(6)
+  cards       cards[]
+}
 
+model cards {
+  id        Int       @id(map: "PK_cards") @default(autoincrement())
+  boardId   Int?
+  content   String?   @db.VarChar(250)
+  positionX Int?      @default(0)
+  positionY Int?      @default(0)
+  createdAt DateTime? @default(now()) @db.Timestamp(6)
+  title     String?   @db.VarChar(250)
+  boards    boards?   @relation(fields: [boardId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_cards_boardId")
+}
