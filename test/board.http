@@ -19,3 +19,16 @@ Content-Type: application/json
 ###
 DELETE {{apiURL}}6
 
+###
+GET {{apiURL}}1/cards
+
+###
+PUT {{apiURL}}cards/6
+Content-Type: application/json
+{
+    "title": "Updated Card Title",
+    "content": "Updated content for the card.",
+    "positionX": 150,
+    "positionY": 250
+}
+
