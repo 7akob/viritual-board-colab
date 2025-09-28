@@ -17,19 +17,19 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
     try {
         const boardId = parseInt(req.params.id, 10);
-        
+
         if (isNaN(boardId)) {
             return res.status(400).json({ error: 'Invalid board ID' });
         }
-        
+
         const board = await prisma.boards.findUnique({
             where: { id: boardId },
         });
-        
+
         if (!board) {
             return res.status(404).json({ error: 'Board not found' });
         }
-        
+
         res.json(board);
     } catch (error) {
         console.log(error);
@@ -61,7 +61,7 @@ router.delete('/:id', async (req, res) => {
         const deletedBoard = await prisma.boards.delete({
             where: { id: boardId },
         });
-        res.json({msg: 'Board deleted', board: deletedBoard});
+        res.json({ msg: 'Board deleted', board: deletedBoard });
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: 'Failed to delete board' });
@@ -71,26 +71,26 @@ router.delete('/:id', async (req, res) => {
 router.get('/:id/cards', async (req, res) => {
     try {
         const boardId = parseInt(req.params.id, 10);
-        
+
         if (isNaN(boardId)) {
             return res.status(400).json({ error: 'Invalid board ID' });
         }
-        
+
         const board = await prisma.boards.findUnique({
             where: { id: boardId }
         });
-        
+
         if (!board) {
             return res.status(404).json({ error: 'Board not found' });
         }
-        
+
         const cards = await prisma.cards.findMany({
             where: { boardId: boardId },
             orderBy: [
                 { createdAt: 'asc' }
             ]
         });
-        
+
         res.json(cards);
     } catch (error) {
         console.log(error);
@@ -101,21 +101,21 @@ router.get('/:id/cards', async (req, res) => {
 router.post('/:id/cards', async (req, res) => {
     try {
         const boardId = parseInt(req.params.id, 10);
-        
+
         if (isNaN(boardId)) {
             return res.status(400).json({ error: 'Invalid board ID' });
         }
-        
+
         const board = await prisma.boards.findUnique({
             where: { id: boardId }
         });
-        
+
         if (!board) {
             return res.status(404).json({ error: 'Board not found' });
         }
-        
+
         const { title, content, positionX, positionY } = req.body;
-        
+
         const newCard = await prisma.cards.create({
             data: {
                 title: title || 'Untitled Card',
@@ -125,7 +125,7 @@ router.post('/:id/cards', async (req, res) => {
                 positionY: positionY || 0
             }
         });
-        
+
         res.status(201).json(newCard);
     } catch (error) {
         console.log(error);
@@ -146,7 +146,7 @@ router.put('/cards/:cardId', async (req, res) => {
         if (!card) {
             return res.status(404).json({ error: 'Card not found' });
         }
-        const updatedCard = await prisma.cards.update({ 
+        const updatedCard = await prisma.cards.update({
             where: { id: cardId },
             data: {
                 title: title !== undefined ? title : card.title,
@@ -165,23 +165,23 @@ router.put('/cards/:cardId', async (req, res) => {
 router.delete('/cards/:cardId', async (req, res) => {
     try {
         const cardId = parseInt(req.params.cardId, 10);
-        
+
         if (isNaN(cardId)) {
             return res.status(400).json({ error: 'Invalid card ID' });
         }
-        
+
         const card = await prisma.cards.findUnique({
             where: { id: cardId }
         });
-        
+
         if (!card) {
             return res.status(404).json({ error: 'Card not found' });
         }
-        
+
         await prisma.cards.delete({
             where: { id: cardId }
         });
-        
+
         res.json({ message: 'Card deleted successfully' });
     } catch (error) {
         console.log(error);
